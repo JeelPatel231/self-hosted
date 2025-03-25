@@ -105,11 +105,9 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
+    # set hostname to use in ts-sidecar/config/ts-config.json and not hardcode ip
+    hostname: jellyfin-service
     user: 1000:1000
-    
-    labels:
-      tsdproxy.enable: "true"
-      tsdproxy.name: "jellyfin"
     
     networks:
       media_server_subnet:
@@ -120,6 +118,22 @@ services:
       - ./jellyfin/config:/config
       - ./jellyfin/cache:/cache
       - ./data/media:/media
+
+  ts-sidecar:
+    image: tailscale/tailscale:latest
+    # set the hostname explicitly as it will be used in tailscale machine name, automatically
+    hostname: jellyfin
+    container_name: ts-jellyfin
+    environment:
+      - TS_SERVE_CONFIG=/config/ts-config.json
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - ./ts-sidecar/state:/var/lib/tailscale
+      - ./ts-sidecar/config:/config
+    networks:
+      media_server_subnet:
+        ipv4_address: "172.255.2.10"
+    restart: unless-stopped
 
 
 networks:

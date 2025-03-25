@@ -16,10 +16,6 @@ services:
       syncthing_subnet:
         ipv4_address: "172.255.4.2"
     
-    labels:
-      tsdproxy.enable: "true"
-      tsdproxy.name: "syncthing"
-
     restart: unless-stopped
     healthcheck:
       test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
