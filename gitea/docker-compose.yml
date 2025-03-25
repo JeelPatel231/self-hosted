@@ -1,0 +1,24 @@
+services:
+  server:
+    image: gitea/gitea:latest
+    restart: always
+    networks:
+      gitea_subnet:
+        ipv4_address: "172.255.3.2"
+    volumes:
+      - ./data:/var/lib/gitea
+      - ./config:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+   #ports:
+   #  - "3000:3000"
+   #  - "2221:2222"
+
+
+networks:
+  gitea_subnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.255.3.0/24
+          gateway: 172.255.3.1

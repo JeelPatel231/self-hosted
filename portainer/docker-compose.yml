@@ -1,0 +1,21 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    networks:
+      portainer_subnet:
+        ipv4_address: "172.255.5.2"
+
+    volumes:
+      - ./data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    
+    restart: unless-stopped
+
+networks:
+  portainer_subnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.255.5.0/24
+          gateway: 172.255.5.1
+
