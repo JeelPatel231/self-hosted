@@ -1,0 +1,28 @@
+services:
+  stirling-pdf:
+    image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
+    networks:
+      stirling_subnet:
+        ipv4_address: "172.255.7.2"
+    # ports:
+    #   - '8080:8080'
+    volumes:
+      - ./StirlingPDF/trainingData:/usr/share/tessdata # Required for extra OCR languages
+      - ./StirlingPDF/extraConfigs:/configs
+      - ./StirlingPDF/customFiles:/customFiles/
+      - ./StirlingPDF/logs:/logs/
+      - ./StirlingPDF/pipeline:/pipeline/
+    environment:
+      - SERVER_PORT=80
+      - DOCKER_ENABLE_SECURITY=false
+      - LANGS=en_US
+
+networks:
+  stirling_subnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.255.7.0/24
+          gateway: 172.255.7.1
+
+
