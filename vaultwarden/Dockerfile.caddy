@@ -1,0 +1,14 @@
+# Builder
+FROM caddy:builder-alpine AS builder
+
+RUN xcaddy build \
+    --with github.com/caddy-dns/porkbun
+
+# Container
+FROM caddy:alpine
+
+# install additional packages
+RUN apk update
+RUN apk add --no-cache tzdata curl
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
