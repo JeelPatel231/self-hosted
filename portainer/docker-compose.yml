@@ -1,6 +1,9 @@
 services:
   portainer:
     image: portainer/portainer-ce:latest
+    ports:
+        - 9443:9443
+        - 9000:9000
     networks:
       portainer_subnet:
         ipv4_address: "172.255.5.2"
