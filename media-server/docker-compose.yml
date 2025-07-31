@@ -32,6 +32,7 @@ services:
   gluetun:
     image: qmcgaw/gluetun
     hostname: qbittorrent
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
 

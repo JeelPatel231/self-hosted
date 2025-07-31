@@ -1,6 +1,7 @@
 services:
   stirling-pdf:
     image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
+    restart: unless-stopped
     networks:
       stirling_subnet:
         ipv4_address: "172.255.7.2"
