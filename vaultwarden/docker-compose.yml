@@ -1,4 +1,26 @@
 services:
+  vaultwarden-backup:
+    image: bruceforce/vaultwarden-backup:latest
+    container_name: vaultwarden-backup
+    hostname: vaultwarden-backup
+    restart: always
+    init: true
+    depends_on:
+      - vaultwarden
+    volumes:
+      - ./vaultwarden-data/:/data/
+      - /media/rclone/vaultwarden-backup:/backup
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - TIMESTAMP=true
+      - DELETE_AFTER=10
+      - UID=0
+      - GID=1000
+      - TZ=Asia/Kolkata
+      - BACKUP_DIR=/backup
+      - CRON_TIME=0 0 * * * # see https://crontab.guru/, define without quotes!
+
   vaultwarden:
     # image is pinned because of the warning of data loss.
     # MAKE A BACKUP BEFORE MIGRATING TO ANOTHER VERSION!!!!
